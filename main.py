@@ -21,6 +21,22 @@ def add_line(s):
 def embed_subtitles(result_folder_path):
     # Convert SRT file to ASS file
     os.system(f"ffmpeg -i {result_folder_path}/target.srt {result_folder_path}/target.ass")
+
+    with open(f"{result_folder_path}/target.ass", 'r') as f:
+        lines = f.readlines()
+
+    for i in range(len(lines)):
+        if 'Style: Default' in lines[i]:
+            # change fontname, fontsize, and boldness
+            fontname = "MS Gothic"
+            fontsize = 20
+            boldness = -1   #-1(Bold) or 0
+            lines[i] = f'Style: Default,{fontname},{fontsize},&Hffffff,&Hffffff,&H0,&H0,{boldness},0,0,0,100,100,0,0,1,1,0,2,10,10,10,0\n'
+            break
+
+    with open(f"{result_folder_path}/target.ass", 'w') as f:
+        f.writelines(lines)
+
     # Embed subtitles in video
     os.system(f"ffmpeg -i {result_folder_path}/target.mp4 -vf ass={result_folder_path}/target.ass {result_folder_path}/output.mp4")
 
