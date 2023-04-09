@@ -1,0 +1,1 @@
+The output results are saved under the folder name entered and set by the customer created within this folder.
